@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Muhammad Arkan Alfaruq | Portfolio</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-neon: #00ff88;
+            --secondary-neon: #00e1ff;
+            --roblox-red: #ff3355;
+            --bg-dark: #050811;
+            --card-bg: rgba(13, 22, 38, 0.85);
+            --border-glow: rgba(0, 255, 136, 0.3);
+            --text-main: #e2e8f0;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Consolas', 'Fira Code', 'Segoe UI', monospace;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Matrix Background Effect */
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.12;
+            pointer-events: none;
+        }
+
+        .wrapper {
+            position: relative;
+            z-index: 1;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        /* Header / Identity Banner */
+        header {
+            background: var(--card-bg);
+            border: 1px solid var(--border-glow);
+            border-left: 5px solid var(--primary-neon);
+            border-radius: 8px;
+            padding: 2.5rem;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.1);
+            backdrop-filter: blur(10px);
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .sys-status {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 0.8rem;
+            color: var(--primary-neon);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pulse {
+            width: 8px;
+            height: 8px;
+            background-color: var(--primary-neon);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--primary-neon);
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 10px rgba(0, 225, 255, 0.5);
+        }
+
+        .hero-subtitle {
+            color: var(--secondary-neon);
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            margin-bottom: 1.2rem;
+        }
+
+        .badges {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 225, 255, 0.1);
+            border: 1px solid var(--secondary-neon);
+            padding: 0.4rem 1rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            color: #fff;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: #fff;
+            margin: 2rem 0 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: var(--primary-neon);
+        }
+
+        /* Tactical Grid Cards */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tactical-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 1.8rem;
+            position: relative;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(8px);
+        }
+
+        .tactical-card:hover {
+            border-color: var(--primary-neon);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .tactical-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 10px;
+            height: 10px;
+            border-top: 2px solid var(--primary-neon);
+            border-left: 2px solid var(--primary-neon);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 1rem;
+        }
+
+        .card-icon {
+            font-size: 1.5rem;
+            color: var(--primary-neon);
+            background: rgba(0, 255, 136, 0.1);
+            padding: 0.6rem;
+            border-radius: 6px;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            color: #fff;
+            text-transform: uppercase;
+        }
+
+        .card-body p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Mastered Skills Grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+        }
+
+        .skill-card {
+            background: rgba(17, 24, 39, 0.8);
+            border: 1px solid rgba(0, 225, 255, 0.2);
+            padding: 1.2rem;
+            border-radius: 6px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .skill-card:hover {
+            border-color: var(--secondary-neon);
+            box-shadow: 0 0 15px rgba(0, 225, 255, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .skill-card i {
+            font-size: 2rem;
+            color: var(--secondary-neon);
+            margin-bottom: 0.5rem;
+        }
+
+        .skill-card h4 {
+            color: #fff;
+            font-size: 1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .skill-card p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            margin-top: 3rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .terminal-text {
+            color: var(--primary-neon);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Matrix Background Canvas -->
+    <canvas id="matrix-canvas"></canvas>
+
+    <div class="wrapper">
+        <!-- Header Profil -->
+        <header>
+            <div class="sys-status">
+                <span class="pulse"></span> ONLINE
+            </div>
+            <h1 class="hero-title">Muhammad Arkan Alfaruq</h1>
+            <p class="hero-subtitle">[ Future Game Developer & Military Cybersecurity Specialist ]</p>
+            <div class="badges">
+                <span class="badge"><i class="fas fa-graduation-cap"></i> SMK Putra Anda Binjai</span>
+                <span class="badge" style="border-color: var(--roblox-red); background: rgba(255, 51, 85, 0.1);"><i class="fas fa-cube"></i> Roblox Creator</span>
+            </div>
+        </header>
+
+        <!-- Sedang Dipelajari & Cita-Cita -->
+        <h2 class="section-title"><i class="fas fa-laptop-code"></i> Fokus & Pembelajaran Saat Ini</h2>
+        <div class="grid-2">
+            <!-- Sedang Dipelajari -->
+            <div class="tactical-card">
+                <div class="card-header">
+                    <i class="fas fa-cubes card-icon" style="color: var(--roblox-red); background: rgba(255, 51, 85, 0.1);"></i>
+                    <h3 class="card-title">Roblox Studio & Coding</h3>
+                </div>
+                <div class="card-body">
+                    <p>Saat ini saya sedang aktif mempelajari logika dasar <strong>pemrograman (coding)</strong> dan pengembangan game 3D interaktif di platform <strong>Roblox Studio</strong> (menggunakan bahasa scripting Lua).</p>
+                </div>
+            </div>
+
+            <!-- Cita Cita -->
+            <div class="tactical-card">
+                <div class="card-header">
+                    <i class="fas fa-user-shield card-icon"></i>
+                    <h3 class="card-title">Cita-Cita Karir</h3>
+                </div>
+                <div class="card-body">
+                    <p>Bercita-cita menjadi seorang <strong>Game Developer</strong> profesional yang handal sekaligus ahli <strong>Cybersecurity di bidang Militer</strong> untuk menjaga keamanan pertahanan siber.</p>
+                </div>
+            </div>
+
+            <!-- Kelas RPL(REKAYASA PERANGKAT LUNAK) -->
+            <div class="tactical-card">
+                <div class="card-header">
+                    <i class="fas fa-user-shield card-icon"></i>
+                    <h3 class="card-title">Kelas RPL</h3>
+                </div>
+                <div class="card-body">
+                    <p>Saya seorang<strong> Pelajar</strong> SMK PUTRA ANDA BINJAI <strong>KELAS 11 </strong>Yang berada di kelas 11 rpl</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Keahlian yang Dikuasai -->
+        <h2 class="section-title"><i class="fas fa-check-circle"></i> Keahlian Yang Sudah Dikuasai</h2>
+        <div class="skills-grid">
+            <!-- Roblox Studio -->
+            <div class="skill-card">
+                <i class="fas fa-gamepad" style="color: var(--roblox-red);"></i>
+                <h4>Roblox Studio</h4>
+                <p>Membuat & merancang game interaktif di Roblox.</p>
+                <img src="https://devforum.roblox.com/t/new-map-for-a-really-big-game/1478302"  width="20" alt="">
+            </div>
+
+            <!-- Coding -->
+            <div class="skill-card">
+                <i class="fas fa-code"></i>
+                <h4>Programming / Coding</h4>
+                <p>Memahami logika dasar pemrograman & scripting.</p>
+            </div>
+
+            <!-- Desain Grafis Canva -->
+            <div class="skill-card">
+                <i class="fas fa-palette"></i>
+                <h4>Desain Grafis (Canva)</h4>
+                <p>Membuat visual banner, poster, & layout kreatif.</p>
+            </div>
+
+            <!-- Editing -->
+            <div class="skill-card">
+                <i class="fas fa-photo-video"></i>
+                <h4>Media Editing</h4>
+                <p>Pengolahan & editing konten media digital.</p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p><span class="terminal-text">arkan@binjai-dev:~$</span> status --ready</p>
+            <p style="margin-top: 5px;">&copy; 2026 Muhammad Arkan Alfaruq | SMK Putra Anda Binjai</p>
+        </footer>
+    </div>
+
+    <!-- Matrix Effect Script -->
+    <script>
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const alphabet = '01ROBLOXDEVSECURITY10';
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        const rainDrops = Array.from({ length: columns }).fill(1);
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(5, 8, 17, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#00ff88';
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < rainDrops.length; i++) {
+                const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+
+                if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    rainDrops[i] = 0;
+                }
+                rainDrops[i]++;
+            }
+        }
+
+        setInterval(drawMatrix, 35);
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
